@@ -1,52 +1,47 @@
 #include <stdio.h>
-#include "operator.h"
+#include <string.h>
+#include "fichier.h"
 
 int main() {
-    int num1, num2;
-    char op;
+    int choix;
+    char nom_fichier[100];
+    char message[500];
 
-    printf("Entrez num1 : ");
-    scanf("%d", &num1);
+    while (1) {
+        printf("\nQue souhaitez-vous faire ?\n");
+        printf("1. Lire un fichier\n");
+        printf("2. Écrire dans un fichier\n");
+        printf("3. Quitter\n");
+        printf("Votre choix : ");
+        scanf("%d", &choix);
+        getchar(); // supprimer le \n restant
 
-    printf("Entrez num2 : ");
-    scanf("%d", &num2);
+        if (choix == 3) {
+            printf("Au revoir !\n");
+            break;
+        }
 
-    printf("Entrez l'operateur (+, -, *, /, %%, &, |, ~) : ");
-    scanf(" %c", &op); // espace avant %c pour ignorer les retours à la ligne
+        printf("\nEntrez le nom du fichier : ");
+        fgets(nom_fichier, sizeof(nom_fichier), stdin);
 
-    int resultat = 0;
+        // retirer le \n
+        nom_fichier[strcspn(nom_fichier, "\n")] = '\0';
 
-    switch (op) {
-        case '+':
-            resultat = somme(num1, num2);
-            break;
-        case '-':
-            resultat = difference(num1, num2);
-            break;
-        case '*':
-            resultat = produit(num1, num2);
-            break;
-        case '/':
-            resultat = quotient(num1, num2);
-            break;
-        case '%':
-            resultat = modulo(num1, num2);
-            break;
-        case '&':
-            resultat = et(num1, num2);
-            break;
-        case '|':
-            resultat = ou(num1, num2);
-            break;
-        case '~':
-            resultat = negation(num1, num2);
-            break;
-        default:
-            printf("Operateur invalide.\n");
-            return 1;
+        if (choix == 1) {
+            lire_fichier(nom_fichier);
+        }
+        else if (choix == 2) {
+            printf("Entrez le message à écrire : ");
+            fgets(message, sizeof(message), stdin);
+            message[strcspn(message, "\n")] = '\0';
+
+            ecrire_dans_fichier(nom_fichier, message);
+        }
+        else {
+            printf("Choix invalide.\n");
+        }
     }
 
-    printf("Résultat : %d\n", resultat);
     return 0;
 }
 
